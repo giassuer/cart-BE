@@ -3,15 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(ProductRequest $request)
     {
-        //
+        try {
+            Log::info($request);
+            $index = $request['pagination']['index'];
+            $size = $request['pagination']['size'];
+
+            $products = Product::query();
+
+            return response()->json(
+                [
+                    'count' => $products->count(),
+                    'products' => $products->skip($index * $size)->take($size)->get()
+                ]
+            );
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something has happened',
+                'errors' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
