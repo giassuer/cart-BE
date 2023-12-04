@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -24,4 +25,13 @@ Route::controller(ProductController::class)
     ->as('product')
     ->group(function () {
         Route::post('products', 'index');
+    });
+
+Route::controller(CartController::class)
+    ->name('product.')
+    ->as('product')
+    ->group(function () {
+        Route::post('cart', 'store');
+        Route::get('cart', 'index');
+        Route::put('cart/{id}', 'edit');
     });

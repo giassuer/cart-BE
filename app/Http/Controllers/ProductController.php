@@ -17,7 +17,6 @@ class ProductController extends Controller
     public function index(ProductRequest $request)
     {
         try {
-            Log::info($request);
             $index = $request['pagination']['index'];
             $size = $request['pagination']['size'];
 
